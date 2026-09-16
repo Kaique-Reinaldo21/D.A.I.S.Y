@@ -1,87 +1,42 @@
 import * as readline from "node:readline";
-import { getSystemInfo } from "./tools/systemInfo";
-import { getMemoryInfo } from "./tools/memoryInfo";
 
-const assistantName: string = "D.A.I.S.Y.";
+import { ToolManager } from "./core/toolManager";
 
-console.log(`\n${assistantName}`);
-console.log("Dynamic Autonomous Intelligence System for You\n");
+import { systemInfoTool } from "./tools/systemInfo";
+import { memoryInfoTool } from "./tools/memoryInfo";
+import { greetingTool } from "./tools/greeting";
+import { aboutTool } from "./tools/about";
+import { exitTool } from "./tools/exit";
+import { createHelpTool } from "./tools/help";
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-function stopAssistant(): void {
-    rl.close();
-    console.log("D.A.I.S.Y > Até depois, Mestre!");
-}
+const toolManager = new ToolManager();
+
+toolManager.register(systemInfoTool);
+toolManager.register(memoryInfoTool);
+toolManager.register(greetingTool);
+toolManager.register(aboutTool);
+toolManager.register(exitTool);
+toolManager.register(createHelpTool(toolManager));
+
+console.log("\nD.A.I.S.Y.");
+console.log("Dynamic Autonomous Intelligence System for You\n");
 
 function startAssistant(): void {
 
-    rl.question("Você > ", (message: string) => {
+    rl.question("Você > ", async (message: string) => {
 
-        const command: string = message.trim().toLowerCase();
+        const result = await toolManager.execute(message);
 
-        if (command === "boa noite daisy" || command === "exit" || command === "sair" || command === "quit") {
+        console.log(result.output);
 
-            stopAssistant();
+        if (result.shouldExit) {
+            rl.close();
             return;
-
-        } else if (command === "bom dia daisy" || command === "yo daisy" || command === "oi" || command === "on") {
-
-            console.log(
-                "D.A.I.S.Y > Olá Mestre, como posso ajudá-lo hoje?"
-            );
-
-        } else if (command === "ajuda" || command === "help") {
-
-            console.log(
-                "D.A.I.S.Y > Aqui estão os Comandos disponíveis: " +
-                "'bom dia daisy', 'Yo daisy', 'bom dia daisy', 'on', 'boa noite daisy', 'ajuda', 'exit', 'sair', 'quit', 'sobre', 'about', 'quem é você?', 'informações do sistema', 'system info', 'sistema' "
-            );
-        } else if (command === "sobre" || command === "about" || command === "quem é você?") {
-
-            console.log(
-                "D.A.I.S.Y > Sou a D.A.I.S.Y, sua assistente de inteligência artificial autônoma!"
-            );
-        } else if (command === "informações do sistema" || command === "system info" || command === "sistema") {
-
-            const systemInfo = getSystemInfo();
-            const memoryInfo = getMemoryInfo();
-            console.log("D.A.I.S.Y > Informações do Sistema:");
-            console.log(`Sistema: ${systemInfo.system}`);
-            console.log(`Versão: ${systemInfo.release}`);
-            console.log(`Arquitetura: ${systemInfo.architecture}`);
-            console.log(`Hostname: ${systemInfo.hostname}`);
-            console.log(`Plataforma: ${systemInfo.platform}`);
-            console.log(`Usuário: ${systemInfo.userInfo.username}`);
-            console.log(`Interfaces de Rede: ${JSON.stringify(systemInfo.networkInterfaces, null, 2)}`);
-            console.log(`Velocidade da CPU: ${systemInfo.cpuSpeed} MHz`);
-            console.log(`Modelo da CPU: ${systemInfo.cpuModel}`);
-            console.log(`Núcleos da CPU: ${systemInfo.cpuCores}`);
-            console.log(`Memória Total (GB): ${systemInfo.totalMemoryGB.toFixed(2)}`);
-            console.log(`Memória Livre (GB): ${systemInfo.freeMemoryGB.toFixed(2)}`);
-            console.log(`Tempo de Atividade (s): ${systemInfo.uptime}`);
-            console.log(`Memória Usada (GB): ${memoryInfo.usedMemoryGB.toFixed(2)}`);
-            console.log(`Uso da RAM: ${memoryInfo.memoryUsagePercentage.toFixed(2)}%`);
-
-
-        } else if (command === "memoria" || command === "memory" || command === "ram") {
-
-            const memoryInfo = getMemoryInfo();
-            console.log("D.A.I.S.Y > Informações da Memória:");
-            console.log(`Memória Total (GB): ${memoryInfo.totalMemoryGB.toFixed(2)}`);
-            console.log(`Memória Livre (GB): ${memoryInfo.freeMemoryGB.toFixed(2)}`);
-            console.log(`Memória Usada (GB): ${memoryInfo.usedMemoryGB.toFixed(2)}`);
-            console.log(`Uso da RAM: ${memoryInfo.memoryUsagePercentage.toFixed(2)}%`);
-
-        } else {
-
-            console.log(
-                `D.A.I.S.Y > Comando não reconhecido, senhor: ${message}`
-            );
-
         }
 
         startAssistant();

@@ -21,3 +21,20 @@ export function getMemoryInfo(): MemoryInfo {
         memoryUsagePercentage
     };
 }
+import type {Tool} from '../core/tool';
+export const memoryInfoTool: Tool = {
+    name: "memory info",
+    aliases: ["informações da memória", "memória", "ram"],
+    description: "Exibe informações detalhadas sobre a memória do sistema.",
+    execute(): { output: string; shouldExit: boolean } {
+        const info = getMemoryInfo();
+        return {
+            output: `D.A.I.S.Y > Informações da Memória:\n` +
+                `Memória Total (GB): ${info.totalMemoryGB.toFixed(2)}\n` +
+                `Memória Livre (GB): ${info.freeMemoryGB.toFixed(2)}\n` +
+                `Memória Usada (GB): ${info.usedMemoryGB.toFixed(2)}\n` +
+                `Uso da RAM: ${info.memoryUsagePercentage.toFixed(2)}%`,
+            shouldExit: false
+        };
+    }
+};  
