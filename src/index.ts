@@ -1,5 +1,6 @@
 import * as readline from "node:readline";
 import { getSystemInfo } from "./tools/systemInfo";
+import { getMemoryInfo } from "./tools/memoryInfo";
 
 const assistantName: string = "D.A.I.S.Y.";
 
@@ -47,6 +48,7 @@ function startAssistant(): void {
         } else if (command === "informações do sistema" || command === "system info" || command === "sistema") {
 
             const systemInfo = getSystemInfo();
+            const memoryInfo = getMemoryInfo();
             console.log("D.A.I.S.Y > Informações do Sistema:");
             console.log(`Sistema: ${systemInfo.system}`);
             console.log(`Versão: ${systemInfo.release}`);
@@ -61,6 +63,18 @@ function startAssistant(): void {
             console.log(`Memória Total (GB): ${systemInfo.totalMemoryGB.toFixed(2)}`);
             console.log(`Memória Livre (GB): ${systemInfo.freeMemoryGB.toFixed(2)}`);
             console.log(`Tempo de Atividade (s): ${systemInfo.uptime}`);
+            console.log(`Memória Usada (GB): ${memoryInfo.usedMemoryGB.toFixed(2)}`);
+            console.log(`Uso da RAM: ${memoryInfo.memoryUsagePercentage.toFixed(2)}%`);
+
+
+        } else if (command === "memoria" || command === "memory" || command === "ram") {
+
+            const memoryInfo = getMemoryInfo();
+            console.log("D.A.I.S.Y > Informações da Memória:");
+            console.log(`Memória Total (GB): ${memoryInfo.totalMemoryGB.toFixed(2)}`);
+            console.log(`Memória Livre (GB): ${memoryInfo.freeMemoryGB.toFixed(2)}`);
+            console.log(`Memória Usada (GB): ${memoryInfo.usedMemoryGB.toFixed(2)}`);
+            console.log(`Uso da RAM: ${memoryInfo.memoryUsagePercentage.toFixed(2)}%`);
 
         } else {
 
