@@ -15,7 +15,7 @@ export const exitTool: Tool = {
 
     execute() {
         return {
-            output: "D.A.I.S.Y > Encerrando a D.A.I.S.Y. Até logo!",
+            output: "D.A.I.S.Y > Encerrando a D.A.I.S.Y. Até logo Mestre!",
             shouldExit: true
         };
     }

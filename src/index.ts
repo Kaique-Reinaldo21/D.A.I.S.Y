@@ -8,6 +8,7 @@ import { greetingTool } from "./tools/greeting";
 import { aboutTool } from "./tools/about";
 import { exitTool } from "./tools/exit";
 import { createHelpTool } from "./tools/help";
+import { openApplicationTool } from "./tools/openApplication";
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -21,6 +22,8 @@ toolManager.register(memoryInfoTool);
 toolManager.register(greetingTool);
 toolManager.register(aboutTool);
 toolManager.register(exitTool);
+toolManager.register(openApplicationTool);
+
 toolManager.register(createHelpTool(toolManager));
 
 console.log("\nD.A.I.S.Y.");

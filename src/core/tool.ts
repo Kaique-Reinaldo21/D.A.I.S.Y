@@ -1,6 +1,7 @@
-export interface toolResult {
+export interface ToolResult {
     output: string;
     shouldExit?: boolean;
+    awaitInput?: boolean;
 }
 
 export interface Tool {
@@ -8,5 +9,9 @@ export interface Tool {
     aliases: string[];
     description: string;
 
-    execute(): toolResult | Promise<toolResult>;
+    match?(input: string): boolean;
+
+    execute(
+        input?: string
+    ): ToolResult | Promise<ToolResult>;
 }
