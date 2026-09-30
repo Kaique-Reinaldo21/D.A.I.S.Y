@@ -10,13 +10,25 @@ import { exitTool } from "./tools/exit";
 import { createHelpTool } from "./tools/help";
 import { openApplicationTool } from "./tools/openApplication";
 
+import { chatWithOllama } from "./ai/ollamaClient";
+
+
+const assistantName: string = "D.A.I.S.Y.";
+
+console.log(`\n${assistantName}`);
+console.log("Dynamic Autonomous Intelligence System for You\n");
+
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+
 const toolManager = new ToolManager();
 
+
+// Registra as ferramentas
 toolManager.register(systemInfoTool);
 toolManager.register(memoryInfoTool);
 toolManager.register(greetingTool);
@@ -24,26 +36,63 @@ toolManager.register(aboutTool);
 toolManager.register(exitTool);
 toolManager.register(openApplicationTool);
 
-toolManager.register(createHelpTool(toolManager));
+// Help por último
+toolManager.register(
+    createHelpTool(toolManager)
+);
 
-console.log("\nD.A.I.S.Y.");
-console.log("Dynamic Autonomous Intelligence System for You\n");
 
 function startAssistant(): void {
 
     rl.question("Você > ", async (message: string) => {
 
-        const result = await toolManager.execute(message);
+        try {
 
-        console.log(result.output);
+            // Primeiro procura alguma Tool
+            const toolResult =
+                await toolManager.execute(message);
 
-        if (result.shouldExit) {
-            rl.close();
-            return;
+
+            // Se alguma Tool reconheceu o comando
+            if (toolResult) {
+
+                console.log(toolResult.output);
+
+                if (toolResult.shouldExit) {
+                    rl.close();
+                    return;
+                }
+
+                startAssistant();
+                return;
+            }
+
+
+            // Se nenhuma Tool reconheceu,
+            // envia a mensagem para o Ollama
+            console.log("D.A.I.S.Y > Pensando...");
+
+            const response =
+                await chatWithOllama(message);
+
+            console.log(
+                `D.A.I.S.Y > ${response}\n`
+            );
+
+
+        } catch (error) {
+
+            console.log(
+                "D.A.I.S.Y > Não consegui acessar meu modelo local."
+            );
+
+            console.error(error);
         }
+
 
         startAssistant();
     });
 }
+
 
 startAssistant();

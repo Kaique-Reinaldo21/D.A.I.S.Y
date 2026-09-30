@@ -21,10 +21,12 @@ export class ToolManager {
         }
     }
 
-    async execute(input: string): Promise<ToolResult> {
+    async execute(input: string): Promise<ToolResult | null> {
 
         const command = this.normalize(input);
 
+        // Se alguma ferramenta estiver esperando
+        // uma resposta do usuário
         if (this.pendingTool) {
 
             const tool = this.pendingTool;
@@ -40,19 +42,21 @@ export class ToolManager {
             return result;
         }
 
+        // Primeiro tenta encontrar comando exato
         let tool = this.tools.get(command);
 
+        // Se não encontrar, procura uma Tool
+        // que reconheça a entrada pelo match()
         if (!tool) {
             tool = this.list().find(
                 t => t.match?.(command)
             );
         }
 
+        // Nenhuma Tool reconheceu
+        // Devolve null para o index.ts mandar ao Ollama
         if (!tool) {
-            return {
-                output:
-                    `D.A.I.S.Y > Comando não encontrado senhor: ${input}`
-            };
+            return null;
         }
 
         const result = await tool.execute(command);
