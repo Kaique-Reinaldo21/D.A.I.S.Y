@@ -73,19 +73,27 @@ function openApplication(
 }
 
 export const openApplicationTool: Tool = {
-
-    name: "open",
-
-    aliases: [
-        "abrir",
-        "abra"
-    ],
-
-    description:
-        "Abre aplicativos instalados no computador.",
-
+    name: "open_application",
+    aliases: [ "abrir", "abra", "open"],
+    description: "Abre aplicativos instalados no computador.",
+    schema: {
+        type: "function",
+        function: {
+            name: "open_application",
+            description: "Abre um aplicativo no computador (ex: brave, firefox, vscode, discord).",
+            parameters: {
+                type: "object",
+                properties: {
+                    appName: {
+                        type: "string",
+                        description: "O nome do aplicativo para abrir, em letras minúsculas."
+                    }
+                },
+                required: ["appName"]
+            }
+        }
+    },
     match(input: string): boolean {
-
         return (
             input === "open" ||
             input === "abrir" ||
@@ -95,53 +103,32 @@ export const openApplicationTool: Tool = {
             input.startsWith("abra ")
         );
     },
+    async execute(input?: string | Record<string, any>){
+      let appName = "";
 
-    async execute(input?: string) {
-
-        if (!input) {
-            return {
-                output:
-                    "D.A.I.S.Y > Por favor, diga qual aplicativo deseja abrir."
-            };
+        // Se o input vier da IA, será um objeto
+        if (typeof input === "object" && input !== null) {
+            appName = input.appName || "";
+        } 
+        // Se vier do terminal via texto
+        else if (typeof input === "string") {
+            appName = input.replace(/^(open|abrir|abra)\s*/, "").trim().toLowerCase();
         }
 
-        const appName = input
-            .replace(/^(open|abrir|abra)\s*/, "")
-            .trim()
-            .toLowerCase();
-
         if (!appName) {
-            return {
-                output:
-                    "D.A.I.S.Y > Qual aplicativo deseja que eu abra, Mestre?",
-                awaitInput: true
-            };
+            return { output: "D.A.I.S.Y > Qual aplicativo deseja que eu abra, Mestre?", awaitInput: true };
         }
 
         const application = applications[appName];
-
         if (!application) {
-            return {
-                output:
-                    `D.A.I.S.Y > O aplicativo "${appName}" não está cadastrado.`
-            };
+            return { output: `O aplicativo "${appName}" não está cadastrado.` };
         }
 
         try {
-
             await openApplication(application);
-
-            return {
-                output:
-                    `D.A.I.S.Y > Abrindo ${appName}...`
-            };
-
+            return { output: `Abrindo ${appName}...` };
         } catch (error) {
-
-            return {
-                output:
-                    `D.A.I.S.Y > Não consegui abrir ${appName}: ${error}`
-            };
+            return { output: `Erro ao abrir ${appName}: ${error}` };
         }
     }
 };

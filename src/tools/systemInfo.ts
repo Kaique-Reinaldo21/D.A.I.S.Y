@@ -42,9 +42,16 @@ export function getSystemInfo(): SystemInfo {
 }
 import type {Tool} from '../core/tool';
 export const systemInfoTool: Tool = {
-    name: "system info",
-    aliases: ["informações do sistema", "sistema"],
+    name: "system_info",
+    aliases: ["informações do sistema", "sistema", "info sistema", "system info"],
     description: "Exibe informações detalhadas sobre o sistema operacional, hardware e memória.",
+    schema: {
+        type: "function",
+        function: {
+            name: "system_info",
+            description: "Coleta informações sobre o computador do usuário (CPU, memória, SO, rede). Use quando o usuário perguntar sobre o status do PC.",
+        }
+    },
     execute(): { output: string; shouldExit: boolean } {
         const info = getSystemInfo();
         return {
