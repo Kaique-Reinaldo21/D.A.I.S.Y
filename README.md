@@ -103,6 +103,7 @@ node -v
 
 npm -v
 # v11.x
+``` 
 
 ### Clonar o repositório
 
@@ -160,74 +161,73 @@ npx tsc --noEmit
 
 ---
 
-
 ## Roadmap
 
 ### v0.1 — Foundation
-[x] Estrutura inicial em TypeScript
-[x] CLI interativa
-[x] Comandos básicos
-[x] Primeira Tool
-[x] Consulta de informações do sistema
-[x] Git e GitHub
-[x] Licença MIT
-[x] .gitignore
-[x] README inicial
+- [x] Estrutura inicial em TypeScript
+- [x] CLI interativa
+- [x] Comandos básicos
+- [x] Primeira Tool
+- [x] Consulta de informações do sistema
+- [x] Git e GitHub
+- [x] Licença MIT
+- [x] `.gitignore`
+- [x] README inicial
 
 ### v0.2 — Tool System
-[x] Separar ferramentas por responsabilidade
-[x] Tool de memória RAM
-[ ] Tool de processos
-[ ] Tool de rede
-[x] Tool para abrir aplicações
-[x] Criar um gerenciador de Tools
-[x] Padronizar respostas das ferramentas
+- [x] Separar ferramentas por responsabilidade
+- [x] Tool de memória RAM
+- [ ] Tool de processos
+- [ ] Tool de rede
+- [x] Tool para abrir aplicações
+- [x] Criar um gerenciador de Tools
+- [x] Padronizar respostas das ferramentas
 
 ### v0.3 — AI Core
-[x] Integrar modelo de IA
-[x] Suporte a modelo local
-[x] Integração com Ollama
-[x] Tool Calling
-[x] Interpretação de linguagem natural
-[x] Remover dependência de comandos fixos
-[x] Implementar Arquitetura de Múltiplos Agentes (Router/QA)
+- [x] Integrar modelo de IA
+- [x] Suporte a modelo local
+- [x] Integração com Ollama
+- [x] Tool Calling
+- [x] Interpretação de linguagem natural
+- [x] Remover dependência de comandos fixos
+- [x] Implementar Arquitetura de Múltiplos Agentes (Router/QA)
 
 ### v0.4 — Memory
-[ ] Memória de conversa
-[ ] Memória persistente
-[ ] Preferências do usuário
-[ ] Memória por projeto
-[ ] Busca contextual
+- [ ] Memória de conversa
+- [ ] Memória persistente
+- [ ] Preferências do usuário
+- [ ] Memória por projeto
+- [ ] Busca contextual
 
 ### v0.5 — Voice
-[ ] Reconhecimento de voz (ElevenLabs planejado)
-[ ] Síntese de voz
-[ ] Palavra de ativação
-[ ] Comandos totalmente por voz
+- [ ] Reconhecimento de voz (ElevenLabs planejado)
+- [ ] Síntese de voz
+- [ ] Palavra de ativação
+- [ ] Comandos totalmente por voz
 
 ### v0.6 — Automation
-[ ] Automação de Linux
-[ ] Controle de aplicações
-[ ] Controle de arquivos
-[ ] Automação de navegador
-[ ] Execução de tarefas encadeadas
-[ ] Sistema de permissões para ações sensíveis
+- [ ] Automação de Linux
+- [ ] Controle de aplicações
+- [ ] Controle de arquivos
+- [ ] Automação de navegador
+- [ ] Execução de tarefas encadeadas
+- [ ] Sistema de permissões para ações sensíveis
 
 ### v0.7 — Mobile
-[ ] Aplicativo Android
-[ ] Comunicação PC ↔ celular
-[ ] Notificações
-[ ] Comandos remotos
-[ ] Sincronização entre dispositivos
+- [ ] Aplicativo Android
+- [ ] Comunicação PC ↔ celular
+- [ ] Notificações
+- [ ] Comandos remotos
+- [ ] Sincronização entre dispositivos
 
 ### v1.0 — Personal AI Assistant
-[ ] IA local + nuvem
-[ ] Voz
-[ ] Memória
-[ ] Automação
-[ ] Sistema de plugins
-[ ] Controle multi-dispositivo
-[ ] Arquitetura modular e extensível
+- [ ] IA local + nuvem
+- [ ] Voz
+- [ ] Memória
+- [ ] Automação
+- [ ] Sistema de plugins
+- [ ] Controle multi-dispositivo
+- [ ] Arquitetura modular e extensível
 ---
 
 ## Objetivo futuro
