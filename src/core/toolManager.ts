@@ -21,6 +21,27 @@ export class ToolManager {
         }
     }
 
+    // Apenas localiza; match() deve atuar como um predicado sem efeitos colaterais.
+    resolve(input: string): Tool | undefined {
+
+        const command = this.normalize(input);
+
+        return this.tools.get(command) ?? this.list().find(
+            tool => tool.match?.(command)
+        );
+    }
+
+    getByName(name: string): Tool | undefined {
+
+        const normalizedName = this.normalize(name);
+
+        return this.list().find(tool =>
+            this.normalize(tool.name) === normalizedName ||
+            (tool.schema !== undefined &&
+                this.normalize(tool.schema.function.name) === normalizedName)
+        );
+    }
+
     async execute(input: string): Promise<ToolResult | null> {
 
         const command = this.normalize(input);
@@ -42,16 +63,7 @@ export class ToolManager {
             return result;
         }
 
-        // Primeiro tenta encontrar comando exato
-        let tool = this.tools.get(command);
-
-        // Se não encontrar, procura uma Tool
-        // que reconheça a entrada pelo match()
-        if (!tool) {
-            tool = this.list().find(
-                t => t.match?.(command)
-            );
-        }
+        const tool = this.resolve(command);
 
         // Nenhuma Tool reconheceu
         // Devolve null para o index.ts mandar ao Ollama
