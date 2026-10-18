@@ -119,6 +119,58 @@ A camada de segurança ainda está em desenvolvimento. A próxima prioridade é 
 
 Validação centralizada, permissões por Tool, audit log, proteção contra prompt injection, separação de dados confiáveis e não confiáveis e redação de informações sensíveis permanecem pendentes.
 
+
+## Multi-Agent Architecture
+
+D.A.I.S.Y. adota como **direção arquitetural** uma abordagem de agentes especializados, cada um com uma responsabilidade clara. A inspiração de design vem do conceito apresentado por Robert C. Martin (Uncle Bob), no qual agentes especializados trabalham em sequência, com gates automáticos entre etapas. Isso não representa uma implementação literal concluída: o Router/QA atual é experimental, e o pipeline completo ainda será desenvolvido.
+
+O pipeline planejado é:
+
+```text
+Specifier
+↓
+Planner / Router
+↓
+Executor
+↓
+Cleaner
+↓
+Hardener
+↓
+QA
+```
+
+- **Specifier:** transforma o pedido do usuário em uma especificação clara, com objetivo, limites e critérios de sucesso.
+- **Planner / Router:** decide o caminho da tarefa e quais ferramentas e agentes serão necessários.
+- **Executor:** solicita a execução das Tools necessárias, sem executar diretamente comandos arbitrários no sistema.
+- **Cleaner:** reduz ruído, normaliza e organiza resultados intermediários.
+- **Hardener:** revisa a solução procurando riscos, inconsistências e fragilidades.
+- **QA:** valida se o resultado final atende ao pedido e aos critérios definidos.
+
+O fluxo deverá funcionar em **ciclos de refinamento**, com gates automáticos para verificar os critérios de aprovação e reprovação entre etapas:
+
+```text
+Specifier → Planner / Router → Executor → Cleaner → Hardener → QA → aprovado?
+  Sim → resposta final
+  Não → retorna à etapa apropriada → corrige → passa novamente pelos gates
+```
+
+A D.A.I.S.Y. não deverá entrar em loops infinitos. O futuro **Loop Controller** deverá controlar o número máximo de iterações, a etapa que falhou, o motivo da reprovação, a etapa para a qual o fluxo deve retornar e os critérios de parada.
+
+Conceitualmente, a conclusão com sucesso deverá exigir QA aprovado, Hardener aprovado e objetivo atendido. A ausência de melhorias relevantes ou o limite máximo de iterações atingido também deverão encerrar o ciclo; nesses casos, o resultado deverá informar as limitações e pendências, sem tratar uma reprovação como sucesso.
+
+**Segurança:** o Hardener Agent não substitui o Security Manager. A autorização de ações sensíveis deverá continuar sendo determinística, implementada em TypeScript. O Security Manager central ainda está pendente; o fluxo conceitual previsto é:
+
+```text
+Agent
+↓
+Security Manager
+↓
+Tool
+```
+
+O LLM pode **solicitar** uma ação, mas não deve ser a autoridade final para aprová-la. Essa arquitetura reforça a filosofia do projeto: separação de responsabilidades e modularidade por agente, auditabilidade das decisões e dos gates, segurança na autorização das Tools e extensibilidade para novas capacidades.
+
 ---
 
 ## Como instalar
@@ -219,6 +271,8 @@ A lista permitida de aplicações e as chamadas sem shell já existem em Tools e
 
 ### v0.3 — AI Core
 
+Fase atual do núcleo de IA, com Router/QA experimental; ainda não corresponde à arquitetura multiagente cíclica completa.
+
 - [x] Integrar modelo de IA
 - [x] Suporte a modelo local
 - [x] Integração com Ollama
@@ -235,6 +289,8 @@ A lista permitida de aplicações e as chamadas sem shell já existem em Tools e
 
 ### v0.3.1 — Multi-Agent Loop
 
+Evolução planejada do AI Core para a arquitetura multiagente cíclica descrita acima. Todos os itens abaixo permanecem pendentes.
+
 - [ ] Specifier Agent
 - [ ] Planner Agent
 - [ ] Executor Agent
@@ -243,9 +299,10 @@ A lista permitida de aplicações e as chamadas sem shell já existem em Tools e
 - [ ] QA Agent
 - [ ] Loop Controller
 - [ ] Gates automáticos entre agentes
-- [ ] Critérios de aprovação/reprovação
-- [ ] Limite de iterações
+- [ ] Critérios de aprovação e reprovação
 - [ ] Retentativa por etapa
+- [ ] Limite máximo de iterações
+- [ ] Integração com Security Manager
 
 ### v0.4 — Memory
 
@@ -257,8 +314,8 @@ A lista permitida de aplicações e as chamadas sem shell já existem em Tools e
 
 ### v0.5 — Voice
 
-- [ ] Reconhecimento de voz (ElevenLabs planejado)
-- [ ] Síntese de voz
+- [ ] Reconhecimento de voz / Speech-to-Text (ElevenLabs planejado)
+- [ ] Síntese de voz / Text-to-Speech (ElevenLabs planejado)
 - [ ] Palavra de ativação
 - [ ] Comandos totalmente por voz
 
