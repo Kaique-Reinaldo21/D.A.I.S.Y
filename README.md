@@ -233,6 +233,20 @@ A lista permitida de aplicações e as chamadas sem shell já existem em Tools e
 - [ ] Eliminar risco de execução duplicada de Tools
 - [ ] Reduzir dependência de comandos fixos
 
+### v0.3.1 — Multi-Agent Loop
+
+- [ ] Specifier Agent
+- [ ] Planner Agent
+- [ ] Executor Agent
+- [ ] Cleaner Agent
+- [ ] Hardener Agent
+- [ ] QA Agent
+- [ ] Loop Controller
+- [ ] Gates automáticos entre agentes
+- [ ] Critérios de aprovação/reprovação
+- [ ] Limite de iterações
+- [ ] Retentativa por etapa
+
 ### v0.4 — Memory
 
 - [ ] Memória de conversa além do histórico temporário da sessão
